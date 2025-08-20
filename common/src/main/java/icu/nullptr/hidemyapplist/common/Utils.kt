@@ -1,15 +1,11 @@
-package icu.nullptr.hidemyapplist.xposed
+package icu.nullptr.hidemyapplist.common
 
 import android.content.pm.ApplicationInfo
 import android.content.pm.IPackageManager
 import android.content.pm.PackageInfo
 import android.os.Binder
 import android.os.Build
-import com.android.apksig.ApkVerifier
-import com.github.kyuubiran.ezxhelper.utils.findField
-import icu.nullptr.hidemyapplist.Magic
-import java.io.File
-import java.util.*
+import java.util.Random
 
 object Utils {
 
@@ -45,14 +41,6 @@ object Utils {
         return result
     }
 
-    fun getPackageNameFromPackageSettings(packageSettings: Any): String? {
-        return runCatching {
-            findField(packageSettings::class.java, true) {
-                name == if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) "mName" else "name"
-            }.get(packageSettings) as? String
-        }.getOrNull()
-    }
-
     fun getInstalledApplicationsCompat(pms: IPackageManager, flags: Long, userId: Int): List<ApplicationInfo> {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             pms.getInstalledApplications(flags, userId)
@@ -75,5 +63,17 @@ object Utils {
         } else {
             pms.getPackageInfo(packageName, flags.toInt(), userId)
         }
+    }
+
+    fun startsWithMultiple(source: String, vararg targets: String): Boolean {
+        assert(source.isNotEmpty() && targets.isNotEmpty())
+
+        for (target in targets) {
+            if (source.startsWith(target)) {
+                return true
+            }
+        }
+
+        return false
     }
 }

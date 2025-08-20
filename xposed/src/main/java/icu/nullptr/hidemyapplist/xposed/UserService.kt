@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.ServiceManager
 import icu.nullptr.hidemyapplist.common.Constants
+import icu.nullptr.hidemyapplist.common.Utils
 import org.frknkrc44.hma_oss.common.BuildConfig
 import rikka.hidden.compat.ActivityManagerApis
 import rikka.hidden.compat.adapter.UidObserverAdapter
@@ -19,6 +20,11 @@ object UserService {
 
     private val uidObserver = object : UidObserverAdapter() {
         override fun onUidActive(uid: Int) {
+            if (HMAService.instance == null) {
+                logE(TAG, "HMAService instance is not available, maybe stopped")
+                return
+            }
+
             if (uid != appUid) return
             try {
                 val provider = ActivityManagerApis.getContentProviderExternal(Constants.PROVIDER_AUTHORITY, 0, null, null)
@@ -33,10 +39,8 @@ object UserService {
                     provider.call(attr, Constants.PROVIDER_AUTHORITY, "", null, extras)
                 } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.R) {
                     provider.call("android", null, Constants.PROVIDER_AUTHORITY, "", null, extras)
-                } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-                    provider.call("android", Constants.PROVIDER_AUTHORITY, "", null, extras)
                 } else {
-                    provider.call("android", "", null, extras)
+                    provider.call("android", Constants.PROVIDER_AUTHORITY, "", null, extras)
                 }
                 if (reply == null) {
                     logE(TAG, "Failed to send binder to app")

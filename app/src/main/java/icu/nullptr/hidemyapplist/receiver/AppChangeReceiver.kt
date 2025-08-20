@@ -1,4 +1,4 @@
-package icu.nullptr.hidemyapplist.ui.receiver
+package icu.nullptr.hidemyapplist.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -31,6 +31,7 @@ class AppChangeReceiver : BroadcastReceiver() {
         if (intent.action in actions) {
             Log.i(TAG, "Received intent: $intent")
             PackageHelper.invalidateCache()
+            // ServiceClient.handlePackageEvent(intent.action, intent.data?.encodedSchemeSpecificPart)
         }
     }
 }

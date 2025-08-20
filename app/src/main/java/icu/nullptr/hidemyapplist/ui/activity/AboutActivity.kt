@@ -3,17 +3,22 @@ package icu.nullptr.hidemyapplist.ui.activity
 import android.annotation.SuppressLint
 import android.widget.ImageView
 import android.widget.TextView
-import com.drakeet.about.*
+import com.drakeet.about.AbsAboutActivity
+import com.drakeet.about.Card
+import com.drakeet.about.Category
+import com.drakeet.about.Contributor
+import com.drakeet.about.License
+import com.drakeet.about.Line
 import org.frknkrc44.hma_oss.BuildConfig
 import org.frknkrc44.hma_oss.R
 
+@Suppress("deprecation")
 class AboutActivity : AbsAboutActivity() {
-
     @SuppressLint("SetTextI18n")
     override fun onCreateHeader(icon: ImageView, slogan: TextView, version: TextView) {
         icon.setImageResource(R.mipmap.ic_launcher)
         slogan.text = applicationInfo.loadLabel(packageManager)
-        version.text = "V" + BuildConfig.VERSION_NAME
+        version.text = BuildConfig.VERSION_NAME
     }
 
     override fun onItemsCreated(items: MutableList<Any>) {

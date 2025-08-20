@@ -1,6 +1,4 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import org.gradle.kotlin.dsl.register
-import java.util.*
 
 plugins {
     alias(libs.plugins.agp.app)
@@ -101,7 +99,6 @@ dependencies {
     implementation(libs.me.zhanghai.android.appiconloader)
     compileOnly(libs.dev.rikka.hidden.stub)
     ksp(libs.com.github.liujingxing.rxhttp.compiler)
-    implementation(libs.androidx.appcompat.resources)
     implementation(libs.material)
 }
 
